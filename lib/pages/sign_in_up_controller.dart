@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_identity_platform_mfa/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tsuruo_kit/tsuruo_kit.dart';
 
 final signInUpController = Provider(
   (ref) => SignInUpController(ref.read),
@@ -13,11 +14,17 @@ class SignInUpController {
   TextEditingController passwordTextController = TextEditingController();
 
   Future<void> signUp() async {
-    await _read(authRepository).createUserWithEmailAndPassword(
-      email: emailTextController.text,
-      password: passwordTextController.text,
+    await _read(progressController).executeWithProgress(
+      () => _read(authRepository).createUserWithEmailAndPassword(
+        email: emailTextController.text,
+        password: passwordTextController.text,
+      ),
     );
   }
 
-  Future<void> signIn() async {}
+  Future<void> signIn() async {
+    await _read(progressController).executeWithProgress(
+      () => _read(authRepository).mfaSetup(),
+    );
+  }
 }

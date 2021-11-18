@@ -47,9 +47,7 @@ class SignInUpPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 OutlinedButton(
-                  onPressed: () {
-                    // TODO(tsuruoka): sign in
-                  },
+                  onPressed: controller.signIn,
                   child: const Text('Sign in'),
                 ),
                 const Gap(20),

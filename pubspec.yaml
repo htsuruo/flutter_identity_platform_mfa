@@ -37,6 +37,7 @@ dependencies:
   gap:
   http:
   simple_logger:
+  tsuruo_kit:
 
 dev_dependencies:
   flutter_test:
