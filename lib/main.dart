@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/pages/pages.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_logger/simple_logger.dart';
 
 import 'logger.dart';
@@ -10,7 +11,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    const App(),
+    const ProviderScope(
+      child: App(),
+    ),
   );
 }
 
@@ -25,9 +28,9 @@ class App extends StatelessWidget {
       theme: ThemeData.from(
         colorScheme: const ColorScheme.light(),
       ),
-      initialRoute: SignInPage.routeName,
+      initialRoute: SignInUpPage.routeName,
       routes: <String, WidgetBuilder>{
-        SignInPage.routeName: (context) => const SignInPage(),
+        SignInUpPage.routeName: (context) => const SignInUpPage(),
         HomePage.routeName: (context) => const HomePage(),
         MFAVerificationPage.routeName: (context) => const MFAVerificationPage(),
       },
