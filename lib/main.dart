@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_identity_platform_mfa/home_page.dart';
-import 'package:flutter_identity_platform_mfa/mfa_verification_page.dart';
-import 'package:flutter_identity_platform_mfa/sign_in_page.dart';
+import 'package:flutter_identity_platform_mfa/pages/pages.dart';
 import 'package:simple_logger/simple_logger.dart';
 
 import 'logger.dart';
@@ -12,12 +10,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    const MyApp(),
+    const App(),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
