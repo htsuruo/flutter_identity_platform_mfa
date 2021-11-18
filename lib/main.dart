@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_identity_platform_mfa/home_page.dart';
+import 'package:flutter_identity_platform_mfa/mfa_verification_page.dart';
 import 'package:flutter_identity_platform_mfa/sign_in_page.dart';
 import 'package:simple_logger/simple_logger.dart';
 
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
       initialRoute: SignInPage.routeName,
       routes: <String, WidgetBuilder>{
         SignInPage.routeName: (context) => const SignInPage(),
+        HomePage.routeName: (context) => const HomePage(),
+        MFAVerificationPage.routeName: (context) => const MFAVerificationPage(),
       },
     );
   }
