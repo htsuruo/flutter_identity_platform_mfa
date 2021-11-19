@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_identity_platform_mfa/auth_result.dart';
 import 'package:flutter_identity_platform_mfa/authenticator.dart';
 import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
 import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
@@ -63,7 +64,7 @@ class HomePage extends ConsumerWidget {
                         );
                     final messenger =
                         ref.read(scaffoldMessengerProvider).currentState!;
-                    if (res.success) {
+                    if (res.type.success) {
                       messenger.showSnackBar(
                         const SnackBar(
                           content:

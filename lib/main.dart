@@ -30,6 +30,7 @@ class App extends ConsumerWidget {
     const lightScheme = ColorScheme.light();
     final user = ref.watch(authenticator).value;
     return MaterialApp(
+      navigatorKey: ref.watch(navigatorProvider),
       scaffoldMessengerKey: ref.watch(scaffoldMessengerProvider),
       title: 'Identity Platform MFA Demo',
       theme: ThemeData.from(
@@ -57,7 +58,6 @@ class App extends ConsumerWidget {
       ),
       routes: <String, WidgetBuilder>{
         HomePage.routeName: (context) => const HomePage(),
-        MFAVerificationPage.routeName: (context) => const MFAVerificationPage(),
       },
     );
   }
