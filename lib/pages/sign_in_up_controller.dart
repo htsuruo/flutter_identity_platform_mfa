@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/auth_repository.dart';
-import 'package:flutter_identity_platform_mfa/scaffold_messagener.dart';
+import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsuruo_kit/tsuruo_kit.dart';
 

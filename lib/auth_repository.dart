@@ -10,8 +10,8 @@ class AuthRepository {
 
   Stream<User?> authStateChange() => _auth.authStateChanges();
   Stream<User?> userChanges() => _auth.userChanges();
-
   Future<void> signOut() => _auth.signOut();
+  Future<String> getIdToken() => _auth.currentUser!.getIdToken();
 
   Future<FirebaseAuthResult> createUserWithEmailAndPassword({
     required String email,
@@ -45,5 +45,13 @@ class AuthRepository {
     }
   }
 
-  Future<String> getIdToken() => _auth.currentUser!.getIdToken();
+  Future<FirebaseAuthResult> sendEmailVerification() async {
+    try {
+      await _auth.currentUser!.sendEmailVerification();
+      return FirebaseAuthResult(success: true);
+    } on FirebaseAuthException catch (e) {
+      logger.warning(e);
+      return FirebaseAuthResult(success: false, exception: e);
+    }
+  }
 }

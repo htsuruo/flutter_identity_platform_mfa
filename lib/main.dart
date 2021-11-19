@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/authenticator.dart';
 import 'package:flutter_identity_platform_mfa/pages/pages.dart';
-import 'package:flutter_identity_platform_mfa/scaffold_messagener.dart';
+import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:tsuruo_kit/tsuruo_kit.dart';
@@ -43,10 +43,16 @@ class App extends ConsumerWidget {
         snackBarTheme: const SnackBarThemeData(
           behavior: SnackBarBehavior.floating,
         ),
+        dividerTheme: const DividerThemeData(space: 0),
       ),
       home: Builder(
         builder: (context) => ProgressHUD(
-          child: user == null ? const SignInUpPage() : const HomePage(),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            child: user == null ? const SignInUpPage() : const HomePage(),
+          ),
         ),
       ),
       routes: <String, WidgetBuilder>{
