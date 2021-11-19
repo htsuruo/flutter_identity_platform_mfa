@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_identity_platform_mfa/auth_repository.dart';
+import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsuruo_kit/tsuruo_kit.dart';
 
@@ -24,7 +25,7 @@ class SignInUpController {
 
   Future<void> signIn() async {
     await _read(progressController).executeWithProgress(
-      () => _read(authRepository).mfaSetup(),
+      () => _read(gcloudApiClient).startMFAEnrollment(),
     );
   }
 }
