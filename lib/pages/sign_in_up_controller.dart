@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/auth_repository.dart';
-import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
+import 'package:flutter_identity_platform_mfa/scaffold_messagener.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsuruo_kit/tsuruo_kit.dart';
 
@@ -14,18 +15,36 @@ class SignInUpController {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
 
+  ScaffoldMessengerState get _messenger =>
+      _read(scaffoldMessengerProvider).currentState!;
+
   Future<void> signUp() async {
-    await _read(progressController).executeWithProgress(
+    final result = await _read(progressController).executeWithProgress(
       () => _read(authRepository).createUserWithEmailAndPassword(
         email: emailTextController.text,
         password: passwordTextController.text,
       ),
     );
+    if (!result.success) {
+      _messenger.showSnackBar(
+        SnackBar(content: Text(result.exception!.code)),
+      );
+      return;
+    }
   }
 
   Future<void> signIn() async {
-    await _read(progressController).executeWithProgress(
-      () => _read(gcloudApiClient).startMFAEnrollment(),
+    final result = await _read(progressController).executeWithProgress(
+      () => _read(authRepository).signInWithEmailAndPassword(
+        email: emailTextController.text,
+        password: passwordTextController.text,
+      ),
     );
+    if (!result.success) {
+      _messenger.showSnackBar(
+        SnackBar(content: Text(result.exception!.code)),
+      );
+      return;
+    }
   }
 }

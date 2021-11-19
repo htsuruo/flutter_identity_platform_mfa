@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_identity_platform_mfa/authenticator.dart';
 import 'package:flutter_identity_platform_mfa/pages/pages.dart';
+import 'package:flutter_identity_platform_mfa/scaffold_messagener.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:tsuruo_kit/tsuruo_kit.dart';
@@ -18,15 +20,17 @@ Future<void> main() async {
   );
 }
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     const lightScheme = ColorScheme.light();
+    final user = ref.watch(authenticator).value;
     return MaterialApp(
+      scaffoldMessengerKey: ref.watch(scaffoldMessengerProvider),
       title: 'Identity Platform MFA Demo',
       theme: ThemeData.from(
         colorScheme: lightScheme,
@@ -36,10 +40,13 @@ class App extends StatelessWidget {
           backgroundColor: colorScheme.surface,
           elevation: 0,
         ),
+        snackBarTheme: const SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+        ),
       ),
       home: Builder(
-        builder: (context) => const ProgressHUD(
-          child: SignInUpPage(),
+        builder: (context) => ProgressHUD(
+          child: user == null ? const SignInUpPage() : const HomePage(),
         ),
       ),
       routes: <String, WidgetBuilder>{
