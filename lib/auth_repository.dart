@@ -11,6 +11,7 @@ class AuthRepository {
   Stream<User?> authStateChange() => _auth.authStateChanges();
   Stream<User?> userChanges() => _auth.userChanges();
   Future<void> signOut() => _auth.signOut();
+  Future<void> reload() => _auth.currentUser!.reload();
   Future<String> getIdToken() => _auth.currentUser!.getIdToken();
 
   Future<FirebaseAuthResult> createUserWithEmailAndPassword({

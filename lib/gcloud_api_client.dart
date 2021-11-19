@@ -15,12 +15,12 @@ class GcloudApiClient {
   final Reader _read;
   static const _domain = 'identitytoolkit.googleapis.com';
   static const _pathPrefix = '/v2/accounts';
-  static const _apiKey = 'xxx';
+  static const _apiKey = 'AIzaSyC4_BaaAcf-VvCMmFII1jc1lrjGwSPEe1s';
   static const _headers = <String, String>{
     'content-type': 'application/json',
   };
 
-  Future<void> _post({
+  Future<String?> _post({
     required String method,
     required Map<String, dynamic> body,
   }) async {
@@ -38,6 +38,10 @@ class GcloudApiClient {
         body: jsonEncode(body),
       );
       logger.info('${response.statusCode}: ${response.body}');
+      if (response.statusCode != 200) {
+        return null;
+      }
+      return response.body;
     } on Exception catch (e) {
       logger.warning(e);
     }
@@ -51,6 +55,38 @@ class GcloudApiClient {
         'phoneNumber': '+11231231234',
       },
     };
-    await _post(method: method, body: body);
+    final responseBody = await _post(method: method, body: body);
+    if (responseBody == null) {
+      return;
+    }
+    final json = jsonDecode(responseBody) as Map<String, dynamic>;
+    final phoneSessionInfo = json['phoneSessionInfo'] as Map<String, dynamic>;
+    final sessionInfo = phoneSessionInfo['sessionInfo'].toString();
+    logger.fine(sessionInfo);
+
+    // TODO(tsuruoka): 仮
+    await finalizeMFAEnrollment(
+      sessionInfo: sessionInfo,
+      code: '123456',
+      phoneNumber: '+11231231234',
+    );
+  }
+
+  Future<void> finalizeMFAEnrollment({
+    required String sessionInfo,
+    required String code,
+    required String phoneNumber,
+  }) async {
+    const method = 'mfaEnrollment:finalize';
+    final body = <String, dynamic>{
+      'idToken': await _read(authRepository).getIdToken(),
+      'phoneVerificationInfo': <String, String>{
+        'sessionInfo': sessionInfo,
+        'code': code,
+        'phoneNumber': phoneNumber,
+      },
+    };
+    final responseBody = await _post(method: method, body: body);
+    logger.fine(responseBody);
   }
 }

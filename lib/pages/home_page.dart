@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/authenticator.dart';
+import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
 import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsuruo_kit/widgets/barrier/progress_controller.dart';
@@ -81,21 +82,31 @@ class HomePage extends ConsumerWidget {
                 ),
                 OutlinedButton(
                   onPressed: () async {
-                    // TODO(tsuruoka): MFA
+                    await ref.read(progressController).executeWithProgress(
+                          () => ref.read(gcloudApiClient).startMFAEnrollment(),
+                        );
                   },
                   child: const Text('MFA Enrollment'),
                 ),
-                ElevatedButton(
+                OutlinedButton(
                   onPressed: () async {
                     await ref.read(progressController).executeWithProgress(
-                          () => ref.read(authRepository).signOut(),
+                          () => ref.read(authRepository).reload(),
                         );
                   },
-                  child: const Text('Logout'),
-                )
+                  child: const Text('Reload'),
+                ),
               ],
             ),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              await ref.read(progressController).executeWithProgress(
+                    () => ref.read(authRepository).signOut(),
+                  );
+            },
+            child: const Text('Sign out'),
+          )
         ],
       ),
     );
