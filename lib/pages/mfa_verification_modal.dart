@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 
-class MFAVerificationModal extends ConsumerWidget {
+class MFAVerificationModal extends ConsumerStatefulWidget {
   const MFAVerificationModal({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MFAVerificationModal> createState() =>
+      _MFAVerificationModalState();
+}
+
+class _MFAVerificationModalState extends ConsumerState<MFAVerificationModal> {
+  TextEditingController textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     const padding = EdgeInsets.all(16);
@@ -32,6 +40,7 @@ class MFAVerificationModal extends ConsumerWidget {
           Padding(
             padding: padding.copyWith(bottom: 0),
             child: TextFormField(
+              controller: textEditingController,
               autofocus: true,
               decoration: const InputDecoration(
                 label: Text('SMS code'),
@@ -44,15 +53,9 @@ class MFAVerificationModal extends ConsumerWidget {
           Padding(
             padding: padding,
             child: OutlinedButton(
-              onPressed: () async {
-                // TODO(tsuruoka): finalizeMFAEnrollment
-                // await ref.read(gcloudApiClient).finalizeMFAEnrollment(
-                //       sessionInfo: sessionInfo,
-                //       code: code,
-                //       phoneNumber: phoneNumber,
-                //     );
-              },
-              child: const Text('Send'),
+              onPressed: () =>
+                  Navigator.of(context).pop(textEditingController.text),
+              child: const Text('Verify'),
             ),
           ),
           const Gap(44),

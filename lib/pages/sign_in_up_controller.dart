@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/auth_repository.dart';
 import 'package:flutter_identity_platform_mfa/auth_result.dart';
-import 'package:flutter_identity_platform_mfa/pages/mfa_verification_page.dart';
+import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
+import 'package:flutter_identity_platform_mfa/logger.dart';
+import 'package:flutter_identity_platform_mfa/pages/mfa_verification_modal.dart';
 import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsuruo_kit/tsuruo_kit.dart';
@@ -47,9 +49,19 @@ class SignInUpController {
       case AuthResultType.success:
         break;
       case AuthResultType.mfaChallenge:
-        await showModalBottomSheet<void>(
-          context: _navigator.context,
-          builder: (context) => const MFAVerificationModal(),
+        final mfaInfoWithCredential = result.mfaInfoWithCredential!;
+        final code = await showModalBottomSheet<String>(
+              context: _navigator.context,
+              builder: (context) => const MFAVerificationModal(),
+            ) ??
+            '';
+        logger.info('code: $code');
+        await _read(progressController).executeWithProgress(
+          () => _read(gcloudApiClient).finalizeMFASignIn(
+            mfaInfoWithCredential: mfaInfoWithCredential,
+            sessionInfo: mfaInfoWithCredential.sessionInfo!,
+            code: code,
+          ),
         );
         break;
       case AuthResultType.failed:

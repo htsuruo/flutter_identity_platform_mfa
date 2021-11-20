@@ -16,7 +16,7 @@ class GcloudApiClient {
   final Reader _read;
   static const _domain = 'identitytoolkit.googleapis.com';
   static const _pathPrefix = '/v2/accounts';
-  static const _apiKey = 'AIzaSyC4_BaaAcf-VvCMmFII1jc1lrjGwSPEe1s';
+  static const _apiKey = 'xxx';
   static const _headers = <String, String>{
     'content-type': 'application/json',
   };
@@ -129,12 +129,14 @@ class GcloudApiClient {
         'phoneNumber': mfaInfoWithCredential.phoneInfo,
       },
     };
-    final responseBody = await _post(method: method, body: body);
-    logger.fine(responseBody);
+    final responseBody = await _post(method: method, body: body) ?? '';
+    final json = jsonDecode(responseBody) as Map<String, dynamic>;
+    final idToken = json['idToken'].toString();
+    logger.info('idToken: $idToken');
   }
 
   // ref. https://cloud.google.com/identity-platform/docs/reference/rest/v1/accounts/signInWithPassword
-  Future<MFAInfoWithCredential?> signInWithEmailAndPassword({
+  Future<MFAInfoWithCredential?> signInWithEmailAndPasswordForMFA({
     required String email,
     required String password,
   }) async {

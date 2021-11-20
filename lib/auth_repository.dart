@@ -48,7 +48,7 @@ class AuthRepository {
       if (e.code == 'second-factor-required') {
         // MFA Challenge
         final mfaInfoWithCredential =
-            await _read(gcloudApiClient).signInWithEmailAndPassword(
+            await _read(gcloudApiClient).signInWithEmailAndPasswordForMFA(
           email: email,
           password: password,
         );
