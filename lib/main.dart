@@ -40,6 +40,10 @@ class App extends ConsumerWidget {
           foregroundColor: lightScheme.primary,
           backgroundColor: colorScheme.surface,
           elevation: 0,
+          titleTextStyle: theme.textTheme.bodyText1!.copyWith(
+            fontWeight: FontWeight.bold,
+            color: lightScheme.primary,
+          ),
         ),
         snackBarTheme: const SnackBarThemeData(
           behavior: SnackBarBehavior.floating,
