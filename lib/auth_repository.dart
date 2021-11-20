@@ -53,29 +53,34 @@ class AuthRepository {
           email: email,
           password: password,
         );
-        if (response.success) {
-          final mfaPendingCredential =
-              response.json!['mfaPendingCredential'].toString();
-          final mfaInfo = response.json!['mfaInfo'] as List<dynamic>;
-          final mfaInfoWithCredential = MFAInfoWithCredential(
-            mfaPendingCredential: mfaPendingCredential,
-            mfaInfo: mfaInfo.first as Map<String, dynamic>,
+        // apiKeyの指定漏れなど
+        if (!response.success) {
+          return FirebaseAuthResult(
+            type: AuthResultType.failed,
+            exception: FirebaseAuthException(code: response.exception!.code),
           );
-          // MFA Challenge
-          final mfaResponse = await _read(gcloudApiClient).startMFASignIn(
-            mfaInfoWithCredential: mfaInfoWithCredential,
+        }
+        final mfaPendingCredential =
+            response.json!['mfaPendingCredential'].toString();
+        final mfaInfo = response.json!['mfaInfo'] as List<dynamic>;
+        final mfaInfoWithCredential = MFAInfoWithCredential(
+          mfaPendingCredential: mfaPendingCredential,
+          mfaInfo: mfaInfo.first as Map<String, dynamic>,
+        );
+        // MFA Challenge
+        final mfaResponse = await _read(gcloudApiClient).startMFASignIn(
+          mfaInfoWithCredential: mfaInfoWithCredential,
+        );
+        if (mfaResponse.success) {
+          final phoneSessionInfo =
+              mfaResponse.json!['phoneResponseInfo'] as Map<String, dynamic>;
+          final sessionInfo = phoneSessionInfo['sessionInfo'].toString();
+          return FirebaseAuthResult(
+            type: AuthResultType.mfaChallenge,
+            mfaInfoWithCredential: mfaInfoWithCredential.sessionInfoCopyWith(
+              sessionInfo: sessionInfo,
+            ),
           );
-          if (mfaResponse.success) {
-            final phoneSessionInfo =
-                mfaResponse.json!['phoneResponseInfo'] as Map<String, dynamic>;
-            final sessionInfo = phoneSessionInfo['sessionInfo'].toString();
-            return FirebaseAuthResult(
-              type: AuthResultType.mfaChallenge,
-              mfaInfoWithCredential: mfaInfoWithCredential.sessionInfoCopyWith(
-                sessionInfo: sessionInfo,
-              ),
-            );
-          }
         }
       }
       return FirebaseAuthResult(type: AuthResultType.failed, exception: e);
