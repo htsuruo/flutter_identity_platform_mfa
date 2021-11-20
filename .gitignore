@@ -47,3 +47,4 @@ app.*.map.json
 
 # Custom
 **/GoogleService-Info.plist
+**/google-services.json

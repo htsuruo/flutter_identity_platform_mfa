@@ -18,12 +18,13 @@ class MFAEnrollmentPage extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Text('Please input your phone number'),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 40,
-                  vertical: 16,
+                  vertical: 24,
                 ),
                 child: TextFormField(
                   controller: controller.phoneNumberTextController,

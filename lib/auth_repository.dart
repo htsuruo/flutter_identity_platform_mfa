@@ -97,21 +97,21 @@ class AuthRepository {
     }
   }
 
-  Future<void> verifyPhoneNumber({required String phoneNumber}) async {
-    await _auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (phoneAuthCredential) {
-        logger.info(phoneAuthCredential);
-      },
-      verificationFailed: (phoneAuthCredential) {
-        logger.info(phoneAuthCredential);
-      },
-      codeSent: (verificationId, _forceResendingToken) {
-        logger.info(verificationId);
-      },
-      codeAutoRetrievalTimeout: (verificationId) {
-        logger.info(verificationId);
-      },
-    );
-  }
+  // Future<void> verifyPhoneNumber({required String phoneNumber}) async {
+  //   await _auth.verifyPhoneNumber(
+  //     phoneNumber: phoneNumber,
+  //     verificationCompleted: (phoneAuthCredential) {
+  //       logger.info(phoneAuthCredential);
+  //     },
+  //     verificationFailed: (phoneAuthCredential) {
+  //       logger.info(phoneAuthCredential);
+  //     },
+  //     codeSent: (verificationId, _forceResendingToken) {
+  //       logger.info(verificationId);
+  //     },
+  //     codeAutoRetrievalTimeout: (verificationId) {
+  //       logger.info(verificationId);
+  //     },
+  //   );
+  // }
 }
