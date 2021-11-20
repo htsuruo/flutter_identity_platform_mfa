@@ -4,6 +4,8 @@ import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
 import 'package:flutter_identity_platform_mfa/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'mfa_info_with_credential.dart';
+
 final authRepository = Provider((ref) => AuthRepository(ref.read));
 
 class AuthRepository {
@@ -29,7 +31,7 @@ class AuthRepository {
       return FirebaseAuthResult(type: AuthResultType.success);
     } on FirebaseAuthException catch (e) {
       logger.warning(e);
-      return FirebaseAuthResult(type: AuthResultType.success, exception: e);
+      return FirebaseAuthResult(type: AuthResultType.failed, exception: e);
     }
   }
 
@@ -46,23 +48,34 @@ class AuthRepository {
     } on FirebaseAuthException catch (e) {
       logger.warning(e);
       if (e.code == 'second-factor-required') {
-        // MFA Challenge
-        final mfaInfoWithCredential =
+        final response =
             await _read(gcloudApiClient).signInWithEmailAndPasswordForMFA(
           email: email,
           password: password,
         );
-        logger.info(e);
-        if (mfaInfoWithCredential != null) {
-          final sessionInfo = await _read(gcloudApiClient).startMFASignIn(
+        if (response.success) {
+          final mfaPendingCredential =
+              response.json!['mfaPendingCredential'].toString();
+          final mfaInfo = response.json!['mfaInfo'] as List<dynamic>;
+          final mfaInfoWithCredential = MFAInfoWithCredential(
+            mfaPendingCredential: mfaPendingCredential,
+            mfaInfo: mfaInfo.first as Map<String, dynamic>,
+          );
+          // MFA Challenge
+          final mfaResponse = await _read(gcloudApiClient).startMFASignIn(
             mfaInfoWithCredential: mfaInfoWithCredential,
           );
-          return FirebaseAuthResult(
-            type: AuthResultType.mfaChallenge,
-            mfaInfoWithCredential: mfaInfoWithCredential.sessionInfoCopyWith(
-              sessionInfo: sessionInfo,
-            ),
-          );
+          if (mfaResponse.success) {
+            final phoneSessionInfo =
+                mfaResponse.json!['phoneResponseInfo'] as Map<String, dynamic>;
+            final sessionInfo = phoneSessionInfo['sessionInfo'].toString();
+            return FirebaseAuthResult(
+              type: AuthResultType.mfaChallenge,
+              mfaInfoWithCredential: mfaInfoWithCredential.sessionInfoCopyWith(
+                sessionInfo: sessionInfo,
+              ),
+            );
+          }
         }
       }
       return FirebaseAuthResult(type: AuthResultType.failed, exception: e);

@@ -56,13 +56,23 @@ class SignInUpController {
             ) ??
             '';
         logger.info('code: $code');
-        await _read(progressController).executeWithProgress(
+        final response = await _read(progressController).executeWithProgress(
           () => _read(gcloudApiClient).finalizeMFASignIn(
             mfaInfoWithCredential: mfaInfoWithCredential,
             sessionInfo: mfaInfoWithCredential.sessionInfo!,
             code: code,
           ),
         );
+        if (!response.success) {
+          _messenger.showSnackBar(
+            SnackBar(
+              content: Text(response.exception!.code),
+            ),
+          );
+          return;
+        }
+        final idToken = response.json!['idToken'].toString();
+        logger.info('idToken: $idToken');
         break;
       case AuthResultType.failed:
         _messenger.showSnackBar(
