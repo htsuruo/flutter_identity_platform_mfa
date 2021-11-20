@@ -1,16 +1,11 @@
 # flutter_identity_platform_mfa
 
-A new Flutter project.
+## Setup
 
-## Getting Started
+1. 下記を参考にFirebaseのConfigurationファイルを設定します。
+- [iOS Installation | FlutterFire](https://firebase.flutter.dev/docs/installation/ios#installing-your-firebase-configuration-file)
+- [Android Installation | FlutterFire](https://firebase.flutter.dev/docs/installation/android#installing-your-firebase-configuration-file)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. APIキーを`--dart-define`で渡します。
+- `API_KEY`という名前でAPIキーをセットしています。
+- ref. https://github.com/HTsuruo/flutter_identity_platform_mfa/blob/5ce1af9f6463f50af3600bd7f8f0e0a7bdd4cfd8/lib/gcloud_api_client.dart#L21
