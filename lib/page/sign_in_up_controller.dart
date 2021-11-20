@@ -10,7 +10,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsuruo_kit/tsuruo_kit.dart';
 
 final signInUpController = Provider(
-  (ref) => SignInUpController(ref.read),
+  (ref) {
+    final controller = SignInUpController(ref.read);
+    ref.onDispose(controller.dispose);
+    return controller;
+  },
 );
 
 class SignInUpController {
@@ -85,5 +89,10 @@ class SignInUpController {
         );
         break;
     }
+  }
+
+  void dispose(){
+    emailTextController.dispose();
+    passwordTextController.dispose();
   }
 }

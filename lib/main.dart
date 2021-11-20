@@ -50,19 +50,24 @@ class App extends ConsumerWidget {
         ),
         dividerTheme: const DividerThemeData(space: 0),
       ),
-      home: Builder(
-        builder: (context) => ProgressHUD(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            switchInCurve: Curves.easeIn,
-            switchOutCurve: Curves.easeOut,
-            child: user == null ? const SignInUpPage() : const HomePage(),
-          ),
+      home: ProgressHUD(
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          switchInCurve: Curves.easeIn,
+          switchOutCurve: Curves.easeOut,
+          child: user == null ? const SignInUpPage() : const HomePage(),
         ),
       ),
-      routes: <String, WidgetBuilder>{
-        HomePage.routeName: (context) => const HomePage(),
-      },
+      // builder: (context, child) {
+      //   return ProgressHUD(
+      //     child: AnimatedSwitcher(
+      //       duration: const Duration(milliseconds: 300),
+      //       switchInCurve: Curves.easeIn,
+      //       switchOutCurve: Curves.easeOut,
+      //       child: user == null ? const SignInUpPage() : const HomePage(),
+      //     ),
+      //   );
+      // },
     );
   }
 }

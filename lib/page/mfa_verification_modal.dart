@@ -14,6 +14,12 @@ class _MFAVerificationModalState extends ConsumerState<MFAVerificationModal> {
   TextEditingController textEditingController = TextEditingController();
 
   @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;

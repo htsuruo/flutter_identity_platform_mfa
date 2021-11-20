@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/authenticator.dart';
-import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
-import 'package:flutter_identity_platform_mfa/logger.dart';
+import 'package:flutter_identity_platform_mfa/page/mfa_enrollmenet_page.dart';
 import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsuruo_kit/widgets/barrier/progress_controller.dart';
@@ -82,23 +81,12 @@ class HomePage extends ConsumerWidget {
                   child: const Text('Email Verify'),
                 ),
                 OutlinedButton(
-                  onPressed: () async {
-                    final response =
-                        await ref.read(progressController).executeWithProgress(
-                              () =>
-                                  ref.read(gcloudApiClient).startMFAEnrollment(
-                                        phoneNumber: '+11231231234',
-                                      ),
-                            );
-                    if (!response.success) {
-                      return;
-                    }
-                    final phoneSessionInfo = response.json!['phoneSessionInfo']
-                        as Map<String, dynamic>;
-                    final sessionInfo =
-                        phoneSessionInfo['sessionInfo'].toString();
-                    logger.fine('sessionInfo: $sessionInfo');
-                  },
+                  onPressed: () => Navigator.of(context).push<void>(
+                    MaterialPageRoute(
+                      builder: (context) => const MFAEnrollmentPage(),
+                      fullscreenDialog: true,
+                    ),
+                  ),
                   child: const Text('MFA Enrollment'),
                 ),
                 OutlinedButton(
