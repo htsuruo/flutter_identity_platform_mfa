@@ -73,6 +73,11 @@ class SignInUpController {
         }
         final idToken = response.json!['idToken'].toString();
         logger.info('idToken: $idToken');
+        _messenger.showSnackBar(
+          const SnackBar(
+            content: Text('Sign in via MFA successfully 🎉🎉🎉'),
+          ),
+        );
         break;
       case AuthResultType.failed:
         _messenger.showSnackBar(
