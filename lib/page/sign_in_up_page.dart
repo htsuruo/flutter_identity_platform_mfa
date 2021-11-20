@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_identity_platform_mfa/pages/sign_in_up_controller.dart';
+import 'package:flutter_identity_platform_mfa/page/page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 

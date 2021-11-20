@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/authenticator.dart';
-import 'package:flutter_identity_platform_mfa/pages/pages.dart';
+import 'package:flutter_identity_platform_mfa/page/page.dart';
 import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_logger/simple_logger.dart';
