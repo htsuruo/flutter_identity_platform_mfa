@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_identity_platform_mfa/auth_repository.dart';
-import 'package:flutter_identity_platform_mfa/mfa_info_with_credential.dart';
+import 'package:flutter_identity_platform_mfa/model/mfa_info_with_credential.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 import 'logger.dart';
+import 'model/model.dart';
 
 final gcloudApiClient = Provider(
   (ref) => GcloudApiClient(ref.read),
@@ -138,16 +139,4 @@ class GcloudApiClient {
       pathPrefix: '/v1',
     );
   }
-}
-
-class ApiResponse {
-  ApiResponse({
-    required this.success,
-    this.json,
-    this.exception,
-  });
-
-  final bool success;
-  final Map<String, dynamic>? json;
-  final PlatformException? exception;
 }

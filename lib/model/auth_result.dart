@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_identity_platform_mfa/mfa_info_with_credential.dart';
+import 'package:flutter_identity_platform_mfa/model/mfa_info_with_credential.dart';
 
 class FirebaseAuthResult {
   FirebaseAuthResult({
