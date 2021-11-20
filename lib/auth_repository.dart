@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
 import 'package:flutter_identity_platform_mfa/logger.dart';
-import 'package:flutter_identity_platform_mfa/model/auth_result.dart';
+import 'package:flutter_identity_platform_mfa/model/firebase_auth_result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'model/mfa_info_with_credential.dart';

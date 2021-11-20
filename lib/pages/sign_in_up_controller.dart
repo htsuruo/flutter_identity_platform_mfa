@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_identity_platform_mfa/auth_repository.dart';
 import 'package:flutter_identity_platform_mfa/gcloud_api_client.dart';
 import 'package:flutter_identity_platform_mfa/logger.dart';
-import 'package:flutter_identity_platform_mfa/model/auth_result.dart';
+import 'package:flutter_identity_platform_mfa/model/firebase_auth_result.dart';
 import 'package:flutter_identity_platform_mfa/pages/mfa_verification_modal.dart';
 import 'package:flutter_identity_platform_mfa/scaffold_messenger_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
