@@ -77,6 +77,7 @@ class SignInUpController {
         }
         final idToken = response.json!['idToken'].toString();
         logger.info('idToken: $idToken');
+        // TODO(tsuruoka): IDトークンの検証とFirebase Authへの通知
         _messenger.showSnackBar(
           const SnackBar(
             content: Text('Sign in via MFA successfully 🎉🎉🎉'),
@@ -91,7 +92,7 @@ class SignInUpController {
     }
   }
 
-  void dispose(){
+  void dispose() {
     emailTextController.dispose();
     passwordTextController.dispose();
   }
