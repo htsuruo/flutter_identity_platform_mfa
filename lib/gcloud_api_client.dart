@@ -18,7 +18,7 @@ class GcloudApiClient {
   final Reader _read;
   static const _domain = 'identitytoolkit.googleapis.com';
   static const _pathPrefix = '/v2/accounts';
-  static const _apiKey = 'xxx';
+  static const _apiKey = String.fromEnvironment('API_KEY');
   static const _headers = <String, String>{
     'content-type': 'application/json',
   };
