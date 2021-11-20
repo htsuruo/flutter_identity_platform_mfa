@@ -67,6 +67,8 @@ class GcloudApiClient {
       'idToken': await _read(authRepository).getIdToken(),
       'phoneEnrollmentInfo': <String, String>{
         'phoneNumber': phoneNumber,
+        'iosReceipt': '',
+        'iosSecret': '',
       },
     };
     return _post(method: method, body: body);
